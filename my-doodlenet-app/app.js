@@ -75,18 +75,24 @@ function startDrawing(event) {
 }
 
 function draw(event) {
-
     if (!isDrawing) {
         return;
     }
 
     event.preventDefault();
-    const point =
-        getPointerPosition(event);
-    ctx.lineTo(
-        point.x,
-        point.y
-    );
+
+    const point = getPointerPosition(event);
+
+    ctx.strokeStyle =
+        drawingMode === "draw" ? "#000000" : "#ffffff";
+
+    ctx.lineWidth =
+        drawingMode === "draw" ? 12 : 24;
+
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    ctx.lineTo(point.x, point.y);
     ctx.stroke();
 }
 
@@ -219,15 +225,23 @@ async function predict() {
 function showPredictions(probabilities) {
 
     const EXCLUDED_CLASSES = new Set([
-        "rain",
-        "sleeping_bag",
-        "knee",
-        "leg",
-        "bottlecap",
-        "animal_migration",
-        "cactus",
-        "pliers",
-        "stitches"
+        "regen",
+        "slaapzak",
+        "knie",
+        "been",
+        "flessendop",
+        "diermigratie",
+        "tang",
+        "hechtingen",
+        "wijnfles",
+        "hechtingen",
+        "vliegdekschip",
+        "The_Great_Wall_of_China",
+        "plafondventilator",
+        "spreadsheet",
+        "vloerlamp",
+        "gewicht"
+        
     ]);
 
     const results = [];
@@ -318,6 +332,26 @@ function showPredictions(probabilities) {
 }
 
 let predictionTimer = null;
+const drawButton = document.getElementById("drawButton");
+const eraseButton = document.getElementById("eraseButton");
+
+function setDrawingMode(mode) {
+    drawingMode = mode;
+
+    drawButton.classList.toggle("active", mode === "draw");
+    eraseButton.classList.toggle("active", mode === "erase");
+}
+
+drawButton.addEventListener("click", () => {
+    setDrawingMode("draw");
+});
+
+eraseButton.addEventListener("click", () => {
+    setDrawingMode("erase");
+});
+
+
+let drawingMode = "draw";
 
 function startPredictionLoop() {
     if (predictionTimer !== null) return;
