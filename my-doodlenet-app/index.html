@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DoodleNet Local</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>DoodleNet</h1>
+
+        <p class="description">
+            Draw something and DoodleNet will try to recognize it.
+        </p>
+
+        <section class="drawing-section">
+
+            <canvas
+                id="canvas"
+                width="280"
+                height="280"
+            ></canvas>
+
+            <div class="buttons">
+
+                <button id="clearButton">
+                    Clear
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="status-section">
+
+            <p id="status">
+                Loading model...
+            </p>
+
+        </section>
+
+        <section class="results-section">
+
+            <h2>Predictions</h2>
+
+            <div id="predictions"></div>
+
+        </section>
+
+    </main>
+
+    <!-- TensorFlow.js -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js">
+    </script>
+
+    <!-- Our application -->
+    <script src="app.js"></script>
+
+</body>
+</html>

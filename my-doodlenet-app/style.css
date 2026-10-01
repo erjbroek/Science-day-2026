@@ -1,0 +1,170 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #f5f5f5;
+
+    color: #222;
+}
+
+.container {
+    width: min(700px, 95vw);
+
+    margin: 40px auto;
+
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    margin-top: 0;
+
+    text-align: center;
+}
+
+.description {
+    text-align: center;
+
+    color: #666;
+}
+
+.drawing-section {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    margin-top: 30px;
+}
+
+#canvas {
+    width: 280px;
+    height: 280px;
+
+    background: white;
+
+    border: 2px solid #222;
+
+    border-radius: 8px;
+
+    cursor: crosshair;
+
+    touch-action: none;
+}
+
+.buttons {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+button {
+    border: none;
+
+    padding: 10px 20px;
+
+    border-radius: 8px;
+
+    background: #222;
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+button:disabled {
+    opacity: 0.4;
+
+    cursor: not-allowed;
+}
+
+.status-section {
+    margin-top: 25px;
+
+    text-align: center;
+}
+
+#status {
+    color: #555;
+}
+
+.results-section {
+    margin-top: 30px;
+}
+
+.results-section h2 {
+    margin-bottom: 15px;
+}
+
+.prediction {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.prediction-label {
+    width: 120px;
+
+    font-weight: 600;
+
+    text-transform: capitalize;
+}
+
+.prediction-bar-container {
+    flex: 1;
+
+    height: 20px;
+
+    background: #eee;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.prediction-bar {
+    height: 100%;
+
+    background: #333;
+
+    border-radius: 10px;
+}
+
+.prediction-percent {
+    width: 60px;
+
+    text-align: right;
+
+    font-variant-numeric: tabular-nums;
+}
