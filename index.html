@@ -10,49 +10,33 @@
 
 
 <body>
-    <div id="predictionImageContainer">
-        <img id="predictionImage" alt="" hidden>
-    </div>
+    <img id="robot" src="robot.png" alt="Robot">
+    
+    <div class="layout">
 
-    <main class="container">
-
-        <h1>DoodleNet</h1>
-
-        <p class="description">
-            Draw something and DoodleNet will try to recognize it.
-        </p>
-
+        <!-- Left: drawing + predictions -->
         <section class="drawing-section">
-
             <div class="buttons">
-                <button id="drawButton" class="active">
-                    Draw
-                </button>
-
-                <button id="eraseButton">
-                    Erase
-                </button>
-
-                <button id="clearButton">
-                    Clear
-                </button>
+                <button id="drawButton" class="active">Tekenen</button>
+                <button id="eraseButton">Gum</button>
+                <button id="clearButton">Leeg maken</button>
             </div>
 
             <canvas id="canvas" width="280" height="280"></canvas>
 
-        </section>
-
-
-        <section class="status-section">
             <p id="status">Loading model...</p>
+
+            <div id="predictions"></div>
         </section>
 
-        <section class="results-section">
-            <section class="results-section">
-                <div id="predictions"></div>
-            </section>
+        <!-- Right: picture of the guess -->
+        <section class="image-section">
+            <div id="predictionImageContainer">
+                <img id="predictionImage" alt="" hidden>
+            </div>
         </section>
-    </main>
+
+    </div>
 
     <!-- TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>

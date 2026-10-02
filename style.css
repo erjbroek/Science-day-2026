@@ -1,4 +1,3 @@
-
 * {
     box-sizing: border-box;
 }
@@ -20,25 +19,15 @@ body {
         sans-serif;
 
     background:
-        radial-gradient(circle at 10% 20%, #fff3b8 0 35px, transparent 36px),
-        radial-gradient(circle at 90% 15%, #c9f4ee 0 45px, transparent 46px),
-        #f7fbfa;
+        /* radial-gradient(circle at 10% 20%, #fff3b8 0 35px, transparent 36px),
+        radial-gradient(circle at 90% 15%, #c9f4ee 0 45px, transparent 46px), */
+        #a8d0ff;
 
     color: #222;
 }
 
 .container {
-    width: min(700px, 95vw);
-
-    margin: 30px auto;
-    padding: 30px;
-
-    background: white;
-
-    border: 3px solid #333;
-    border-radius: 24px;
-
-    box-shadow: 0 10px 0 #9bded5;
+    --canvas-size: clamp(280px, calc(100vh - 270px), 900px);
 }
 
 h1 {
@@ -62,6 +51,17 @@ h1 {
     line-height: 1.5;
 }
 
+.layout {
+    --canvas-size: clamp(280px, calc(100vh - 270px), 900px);
+
+    display: grid;
+    grid-template-columns: var(--canvas-size) minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+
 h1 {
     margin-top: 0;
     text-align: center;
@@ -70,13 +70,27 @@ h1 {
 .drawing-section {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    margin-left: 5vw;
+    /* adjust to taste */
+}
+
+.buttons {
+    display: flex;
     align-items: center;
-    margin-top: 30px;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.image-section {
+    position: relative;
+    /* anchor for the absolute container */
 }
 
 #canvas {
-    width: 280px;
-    height: 280px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
     background: white;
     border: 2px solid #222;
     border-radius: 8px;
@@ -84,13 +98,20 @@ h1 {
     touch-action: none;
 }
 
-.buttons {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    width: 280px;
-    margin-bottom: 12px;
+#robot {
+    position: fixed;      /* pinned to the screen, out of the layout flow */
+    right: 20px;
+    bottom: 150px;
+    width: clamp(150px, 25vw, 350px);         /* adjust to taste */
+    height: auto;
+    pointer-events: none; /* never blocks clicks or drawing underneath */
+    z-index: 10;
+}
+
+#status {
+    margin: 10px 0;
+    color: #555;
+    text-align: center;
 }
 
 button {
@@ -140,7 +161,9 @@ button:disabled {
 }
 
 .results-section {
-    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .results-section h2 {
@@ -180,20 +203,20 @@ button:disabled {
     font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 700px) {
+    .layout {
+        --canvas-size: min(90vw, 500px);
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .drawing-section {
+        margin: 5vw auto;
+        width: var(--canvas-size);
+    }
+
     .container {
-        width: 95vw;
-        margin: 16px auto;
-        padding: 20px 12px;
-    }
-
-    #canvas {
-        width: min(280px, 80vw);
-        height: min(280px, 80vw);
-    }
-
-    .buttons {
-        width: min(280px, 80vw);
+        padding: 16px 14px;
     }
 
     .prediction-label {
@@ -201,30 +224,63 @@ button:disabled {
     }
 }
 
-
 #predictionImageContainer {
-    position: fixed;          /* was: absolute */
-    top: 20px;
-    right: 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 
-    width: 180px;
-    height: 180px;
+    /* a circle: equal width and height */
+    width: min(100%, var(--canvas-size), 500px);
+    aspect-ratio: 1 / 1;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: white;
+    border: 2px solid #222;
+    border-radius: 50%;
 
-    z-index: 10;
-    pointer-events: none;     /* so it never blocks clicks/drawing */
+    pointer-events: none;
+}
+
+/* Hide the whole bubble while there's no image */
+#predictionImageContainer:has(#predictionImage[hidden]) {
+    display: none;
+}
+
+/* Little thought-bubble trail (pointing toward the robot) */
+#predictionImageContainer::before,
+#predictionImageContainer::after {
+    content: "";
+    position: absolute;
+    background: white;
+    border: 2px solid #222;
+    border-radius: 50%;
+}
+
+#predictionImageContainer::before {
+    width: 8%;
+    height: 8%;
+    right: 8%;
+    bottom: -6%;
+}
+
+#predictionImageContainer::after {
+    width: 4.5%;
+    height: 4.5%;
+    right: 2%;
+    bottom: -13%;
 }
 
 #predictionImage {
-    max-width: 100%;
-    max-height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
+    /* keep the drawing inside the circle with some padding */
+    max-width: 70%;
+    max-height: 70%;
     width: auto;
     height: auto;
-
     object-fit: contain;
 }
 

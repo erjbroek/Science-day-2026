@@ -210,42 +210,42 @@ function canvasToTensor() {
 
 const predictionImage = document.getElementById("predictionImage");
 
-function showPredictionImage(index) {
-    // Same prediction as the image currently being shown.
-    // Don't reload the image.
-    if (index === currentImageIndex) {
-        return;
-    }
+    function showPredictionImage(index) {
+        // Same prediction as the image currently being shown.
+        // Don't reload the image.
+        if (index === currentImageIndex) {
+            return;
+        }
 
-    currentImageIndex = index;
+        currentImageIndex = index;
 
-    const englishName = CLASSES_EN[index];
+        const englishName = CLASSES_EN[index];
 
-    if (!englishName) {
+        if (!englishName) {
+            predictionImage.hidden = true;
+            return;
+        }
+
+        const filename = englishName
+            .toLowerCase()
+            .trim()
+            .replaceAll(" ", "_") + ".jpg";
+
+        const imagePath = `./images/${filename}`;
+
         predictionImage.hidden = true;
-        return;
+        predictionImage.src = imagePath;
+        predictionImage.alt = englishName;
+
+        predictionImage.onload = () => {
+            predictionImage.hidden = false;
+        };
+
+        predictionImage.onerror = () => {
+            predictionImage.hidden = true;
+            console.error(`Image not found: ${imagePath}`);
+        };
     }
-
-    const filename = englishName
-        .toLowerCase()
-        .trim()
-        .replaceAll(" ", "_") + ".jpg";
-
-    const imagePath = `./images/${filename}`;
-
-    predictionImage.hidden = true;
-    predictionImage.src = imagePath;
-    predictionImage.alt = englishName;
-
-    predictionImage.onload = () => {
-        predictionImage.hidden = false;
-    };
-
-    predictionImage.onerror = () => {
-        predictionImage.hidden = true;
-        console.error(`Image not found: ${imagePath}`);
-    };
-}
 
 async function predict() {
 
@@ -416,9 +416,7 @@ function showPredictions(probabilities) {
     }
 }
 
-let predictionTimer = null;
-const drawButton = document.getElementById("drawButton");
-const eraseButton = document.getElementById("eraseButton");
+let predictionTimer = null; 
 
 function setDrawingMode(mode) {
     drawingMode = mode;
@@ -455,6 +453,8 @@ function stopPredictionLoop() {
         predictionTimer = null;
     }
 }
+
+
 
 async function loadModel() {
     try {
