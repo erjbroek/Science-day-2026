@@ -1,13 +1,31 @@
-const MODEL_PATH = "./model-tfjs/model.json";
+// const MODEL_PATH = "./model-tfjs/model.json";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const clearButton =document.getElementById("clearButton");
 const statusElement =document.getElementById("status");
-const predictionsElement =document.getElementById("predictions");
+const predictionsElement = document.getElementById("predictions");
 
 
+
+
+// testing
+
+const MODEL_PATH = "./model-tfjs/model.json";
+
+console.log("Current page:", window.location.href);
+console.log("Model path:", MODEL_PATH);
+console.log(
+    "Resolved model URL:",
+    new URL(MODEL_PATH, window.location.href).href
+);
+
+model = await tf.loadLayersModel(MODEL_PATH);
+
+
+
+// testing
 
 let model = null;
 let isDrawing = false;
