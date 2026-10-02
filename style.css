@@ -83,14 +83,9 @@ h1 {
 }
 
 .image-section {
-    position: relative;      /* keep: the bubble is positioned against this */
-    align-self: stretch;     /* was start from the grid; now the column is as tall as the canvas side */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;   /* push the robot to the bottom */
-    align-items: flex-end;       /* and to the right */
+    position: relative;
+    /* anchor for the absolute container */
 }
-
 
 #canvas {
     width: 100%;
@@ -103,15 +98,15 @@ h1 {
     touch-action: none;
 }
 
-
 #robot {
-    /* no position/right/bottom/z-index anymore */
-    width: clamp(150px, 25vw, 350px);
-    max-width: 100%;
+    position: absolute;
+    right: 0px;
+    bottom: -90vh;
+    width: clamp(130px, 20vw, 300px);
     height: auto;
-    margin-bottom: 20px;     /* nudge up from the bottom edge, adjust to taste */
     pointer-events: none;
-}
+    z-index: 10;
+}   
 
 #status {
     margin: 10px 0;
@@ -236,7 +231,7 @@ button:disabled {
     transform: translateX(-50%);
 
     /* a circle: equal width and height */
-    width: min(100%, var(--canvas-size), 400px);
+    width: min(100%, var(--canvas-size), 300px);
     aspect-ratio: 1 / 1;
 
     background: white;
