@@ -1,31 +1,13 @@
-// const MODEL_PATH = "./model-tfjs/model.json";
+const MODEL_PATH = "./model-tfjs/model.json";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const clearButton =document.getElementById("clearButton");
 const statusElement =document.getElementById("status");
-const predictionsElement = document.getElementById("predictions");
+const predictionsElement =document.getElementById("predictions");
 
 
-
-
-// testing
-
-const MODEL_PATH = "./model-tfjs/model.json";
-
-console.log("Current page:", window.location.href);
-console.log("Model path:", MODEL_PATH);
-console.log(
-    "Resolved model URL:",
-    new URL(MODEL_PATH, window.location.href).href
-);
-
-model = await tf.loadLayersModel(MODEL_PATH);
-
-
-
-// testing
 
 let model = null;
 let isDrawing = false;
@@ -474,32 +456,55 @@ function stopPredictionLoop() {
     }
 }
 
-
 async function loadModel() {
-
     try {
+        console.log("Current page:", window.location.href);
+        console.log("Model path:", MODEL_PATH);
 
-        statusElement.textContent =
-            "Loading DoodleNet...";
+        const resolvedURL = new URL(
+            MODEL_PATH,
+            window.location.href
+        ).href;
 
         console.log(
-            "TensorFlow.js version:",
-            tf.version.tfjs
+            "Resolved model URL:",
+            resolvedURL
+        );
+
+        // Test model.json manually
+        const response = await fetch(resolvedURL);
+
+        console.log(
+            "Fetch status:",
+            response.status
         );
 
         console.log(
-            "Loading:",
-            MODEL_PATH
+            "Fetch OK:",
+            response.ok
         );
 
-        model =
-            await tf.loadLayersModel(
-                MODEL_PATH
+        if (!response.ok) {
+            throw new Error(
+                `Could not fetch model.json: ${response.status}`
             );
+        }
+
+        const modelJSON = await response.json();
 
         console.log(
-            "Model loaded:"
+            "Model JSON loaded:",
+            modelJSON
         );
+
+        // Now let TensorFlow.js load it
+        console.log("Loading TensorFlow.js model...");
+
+        model = await tf.loadLayersModel(
+            resolvedURL
+        );
+
+        console.log("Model loaded successfully!");
 
         model.summary();
 
@@ -513,20 +518,14 @@ async function loadModel() {
             model.outputs[0].shape
         );
 
-        statusElement.textContent =
-            "DoodleNet loaded.";
-
     } catch (error) {
-
         console.error(
             "Could not load DoodleNet:",
             error
         );
-
-        statusElement.textContent =
-            "Could not load model. Check the console.";
     }
 }
+
 
 
 // ------------------------------------------------------------
