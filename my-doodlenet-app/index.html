@@ -1,18 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DoodleNet Local</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
+    <div id="predictionImageContainer">
+        <img id="predictionImage" alt="" hidden>
+    </div>
+
     <main class="container">
+
         <h1>DoodleNet</h1>
 
         <p class="description">
@@ -35,35 +38,19 @@
                 </button>
             </div>
 
-            <canvas
-                id="canvas"
-                width="280"
-                height="280"
-            ></canvas>
+            <canvas id="canvas" width="280" height="280"></canvas>
 
         </section>
+
 
         <section class="status-section">
             <p id="status">Loading model...</p>
         </section>
 
         <section class="results-section">
-
-            <!-- Robot's guess and corresponding image -->
-            <div class="robot-guess">
-                <div class="thought-bubble">
-                    <img
-                        id="predictionImage"
-                        alt=""
-                        hidden
-                    >
-                    <p id="predictionLabel"></p>
-                </div>
-            </div>
-
-            <!-- Other predictions -->
-            <div id="predictions"></div>
-
+            <section class="results-section">
+                <div id="predictions"></div>
+            </section>
         </section>
     </main>
 
@@ -73,4 +60,5 @@
     <!-- Our application -->
     <script src="app.js"></script>
 </body>
+
 </html>

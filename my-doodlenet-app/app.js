@@ -12,9 +12,35 @@ const predictionsElement =document.getElementById("predictions");
 let model = null;
 let isDrawing = false;
 let hasDrawing = false;
+let currentImageIndex = null;
 
 let CLASSES = [];
+let CLASSES_NL = [];
+let CLASSES_EN = [];
+
 async function loadClasses() {
+    const [nlResponse, enResponse] = await Promise.all([
+        fetch("./class_names.txt"),
+        fetch("./class_names_en.txt")
+    ]);
+
+    if (!nlResponse.ok || !enResponse.ok) {
+        throw new Error("Could not load class name files.");
+    }
+
+    const [nlText, enText] = await Promise.all([
+        nlResponse.text(),
+        enResponse.text()
+    ]);
+
+    const parseClasses = text =>
+        text.split(/\r?\n/)
+            .map(name => name.trim())
+            .filter(Boolean);
+
+    CLASSES_NL = parseClasses(nlText);
+    CLASSES_EN = parseClasses(enText);
+
     const response = await fetch("./class_names.txt");
     console.log(response)
 
@@ -31,7 +57,11 @@ async function loadClasses() {
         .map(name => name.trim())
         .filter(name => name.length > 0);
 
-    console.log(`Loaded ${CLASSES.length} classes`);
+    if (CLASSES_NL.length !== CLASSES_EN.length) {
+        throw new Error("The Dutch and English class files have different lengths.");
+    }
+
+    console.log(`Loaded ${CLASSES_NL.length} classes.`);
 }
 
 function clearCanvas() {
@@ -44,7 +74,12 @@ function clearCanvas() {
     );
 
     hasDrawing = false;
+
     predictionsElement.innerHTML = "";
+
+    predictionImage.hidden = true;
+    predictionImage.src = "";
+    currentImageIndex = null;
 }
 
 function getPointerPosition(event) {
@@ -172,6 +207,46 @@ function canvasToTensor() {
     });
 }
 
+
+const predictionImage = document.getElementById("predictionImage");
+
+function showPredictionImage(index) {
+    // Same prediction as the image currently being shown.
+    // Don't reload the image.
+    if (index === currentImageIndex) {
+        return;
+    }
+
+    currentImageIndex = index;
+
+    const englishName = CLASSES_EN[index];
+
+    if (!englishName) {
+        predictionImage.hidden = true;
+        return;
+    }
+
+    const filename = englishName
+        .toLowerCase()
+        .trim()
+        .replaceAll(" ", "_") + ".jpg";
+
+    const imagePath = `../images/${filename}`;
+
+    predictionImage.hidden = true;
+    predictionImage.src = imagePath;
+    predictionImage.alt = englishName;
+
+    predictionImage.onload = () => {
+        predictionImage.hidden = false;
+    };
+
+    predictionImage.onerror = () => {
+        predictionImage.hidden = true;
+        console.error(`Image not found: ${imagePath}`);
+    };
+}
+
 async function predict() {
 
     if (!model) {
@@ -202,12 +277,8 @@ async function predict() {
             await output.data();
 
         input.dispose();
-
         output.dispose();
-
-        showPredictions(
-            probabilities
-        );
+        showPredictions(probabilities);
 
         statusElement.textContent =
             "Prediction complete.";
@@ -240,7 +311,16 @@ function showPredictions(probabilities) {
         "plafondventilator",
         "spreadsheet",
         "vloerlamp",
-        "gewicht"
+        "gewicht",
+        "knife",
+        "yoga",
+        "pistool",
+        "rifle",
+        "stereo",
+        "bottlecap",
+        "flessendop",
+        "bosje",
+        "bush"
         
     ]);
 
@@ -269,6 +349,11 @@ function showPredictions(probabilities) {
             b.probability -
             a.probability
     );
+
+
+    if (results.length > 0) {
+        showPredictionImage(results[0].index);
+    }
 
     const topResults =
         results.slice(0, 5);
