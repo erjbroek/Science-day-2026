@@ -231,7 +231,7 @@ function showPredictionImage(index) {
         .trim()
         .replaceAll(" ", "_") + ".jpg";
 
-    const imagePath = `../images/${filename}`;
+    const imagePath = `./images/${filename}`;
 
     predictionImage.hidden = true;
     predictionImage.src = imagePath;
