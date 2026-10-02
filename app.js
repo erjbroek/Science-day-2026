@@ -1,4 +1,4 @@
-const MODEL_PATH = "./model-tfjs/model.json";
+const MODEL_PATH = "../model-tfjs/model.json";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -471,18 +471,10 @@ async function loadModel() {
             resolvedURL
         );
 
-        // Test model.json manually
         const response = await fetch(resolvedURL);
 
-        console.log(
-            "Fetch status:",
-            response.status
-        );
-
-        console.log(
-            "Fetch OK:",
-            response.ok
-        );
+        console.log("Fetch status:", response.status);
+        console.log("Fetch OK:", response.ok);
 
         if (!response.ok) {
             throw new Error(
@@ -497,12 +489,9 @@ async function loadModel() {
             modelJSON
         );
 
-        // Now let TensorFlow.js load it
         console.log("Loading TensorFlow.js model...");
 
-        model = await tf.loadLayersModel(
-            resolvedURL
-        );
+        model = await tf.loadLayersModel(resolvedURL);
 
         console.log("Model loaded successfully!");
 
@@ -524,8 +513,7 @@ async function loadModel() {
             error
         );
     }
-}
-
+}       
 
 
 // ------------------------------------------------------------
