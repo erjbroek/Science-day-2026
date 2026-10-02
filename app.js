@@ -1,4 +1,4 @@
-const MODEL_PATH = "../model-tfjs/model.json";
+const MODEL_PATH = "./model-tfjs/model.json";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
