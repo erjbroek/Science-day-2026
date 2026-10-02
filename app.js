@@ -1,4 +1,4 @@
-const MODEL_PATH = "../model-tfjs/model.json";
+const MODEL_PATH = "./model-tfjs/model.json";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -16,7 +16,7 @@ let currentImageIndex = null;
 
 let CLASSES = [];
 let CLASSES_NL = [];
-let CLASSES_EN = [];
+let CLASSES_EN = [];    
 
 async function loadClasses() {
     const [nlResponse, enResponse] = await Promise.all([
